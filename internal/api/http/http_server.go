@@ -14,6 +14,7 @@ type Server struct {
 	productHandler  *v1.ProductHandler
 	categoryHandler *v1.CategoryHandler
 	supplierHandler *v1.SupplierHandler
+	distanceHandler *v1.DistanceHandler
 }
 
 func NewServer(
@@ -21,12 +22,14 @@ func NewServer(
 	productHandler *v1.ProductHandler,
 	categoryHandler *v1.CategoryHandler,
 	supplierHandler *v1.SupplierHandler,
+	distanceHandler *v1.DistanceHandler,
 ) *Server {
 	return &Server{
 		cfg:             cfg,
 		productHandler:  productHandler,
 		categoryHandler: categoryHandler,
 		supplierHandler: supplierHandler,
+		distanceHandler: distanceHandler,
 	}
 }
 
@@ -40,20 +43,13 @@ func (s *Server) Run() {
 	}
 	httpServer, router := httpserver.NewServer(*config)
 
-	// // Add recover panic middleware
-	// router.Use(middlewares.RecoverPanicMiddleware(middlewares.RecoverPanicMiddlewareConfig{
-	// 	SlackConfig: slack.SlackConfig{
-	// 		Channel:         s.cfg.SlackService.Channel,
-	// 		Username:        s.cfg.SlackService.Username,
-	// 		UrlSlackWebHook: s.cfg.SlackService.UrlSlackWebhook,
-	// 	}}))
-
 	// In the future, if we have v2, v3..., we will add at here
 	v1.MapRoutes(
 		router,
 		s.productHandler,
 		s.categoryHandler,
 		s.supplierHandler,
+		s.distanceHandler,
 	)
 	httpServer.Run()
 }

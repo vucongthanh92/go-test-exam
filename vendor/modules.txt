@@ -332,6 +332,13 @@ github.com/josharian/intern
 # github.com/json-iterator/go v1.1.12
 ## explicit; go 1.12
 github.com/json-iterator/go
+# github.com/jung-kurt/gofpdf v1.16.2
+## explicit; go 1.12
+github.com/jung-kurt/gofpdf
+# github.com/kelvins/geocoder v0.0.0-20231112130812-98d82c75e49b
+## explicit
+github.com/kelvins/geocoder
+github.com/kelvins/geocoder/structs
 # github.com/klauspost/compress v1.17.11
 ## explicit; go 1.21
 github.com/klauspost/compress
@@ -626,6 +633,9 @@ github.com/ulule/limiter/v3
 github.com/ulule/limiter/v3/drivers/middleware/gin
 github.com/ulule/limiter/v3/drivers/store/common
 github.com/ulule/limiter/v3/drivers/store/memory
+# github.com/umahmood/haversine v0.0.0-20151105152445-808ab04add26
+## explicit
+github.com/umahmood/haversine
 # github.com/uptrace/opentelemetry-go-extra/otelsql v0.3.2
 ## explicit; go 1.22
 github.com/uptrace/opentelemetry-go-extra/otelsql
@@ -957,9 +967,6 @@ google.golang.org/protobuf/types/known/fieldmaskpb
 google.golang.org/protobuf/types/known/structpb
 google.golang.org/protobuf/types/known/timestamppb
 google.golang.org/protobuf/types/known/wrapperspb
-# gopkg.in/guregu/null.v3 v3.5.0
-## explicit
-gopkg.in/guregu/null.v3
 # gopkg.in/ini.v1 v1.67.0
 ## explicit
 gopkg.in/ini.v1

@@ -15,6 +15,7 @@ import (
 	"net/http"
 	"os"
 	"reflect"
+	"regexp"
 	"runtime/debug"
 	"strings"
 	"time"
@@ -363,10 +364,6 @@ func RetryWithBackoff(attempts int, initialBackoff time.Duration, fn func() erro
 	return lastAttemptErr
 }
 
-func SetHeaderByKey(c *gin.Context, key string) context.Context {
-	return utilsSvc.SetHeaderToContext(c, key)
-}
-
 func GetHeaderFromKey(ctx context.Context, key, field string) (resp string) {
 	if key == "" || field == "" {
 		return resp
@@ -393,4 +390,35 @@ func CompareEqualFold(src string, dst ...string) (resp bool) {
 	}
 
 	return resp
+}
+
+func ValidateAndConvertTime(req string) (res time.Time, err error) {
+	if req == "" {
+		return res, errors.New("empty date string")
+	}
+
+	regex := `^\d{4}-\d{2}-\d{2}$`
+	layout := "2006-01-02"
+
+	matched, err := regexp.MatchString(regex, req)
+	if !matched || err != nil {
+		return res, err
+	}
+
+	parsedTime, err := time.Parse(layout, req)
+	if err != nil {
+		return res, err
+	}
+
+	res = time.Date(parsedTime.Year(), parsedTime.Month(), parsedTime.Day(), 0, 0, 0, 0, time.UTC)
+
+	return res, nil
+}
+
+func GetIPFromClient(c *gin.Context) string {
+	ip := c.ClientIP()
+	if ip == "127.0.0.1" || ip == "::1" {
+		ip = "8.8.8.8" // Địa chỉ IP mặc định (Google Public DNS) nếu chạy local
+	}
+	return ip
 }

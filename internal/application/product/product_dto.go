@@ -11,9 +11,10 @@ import (
 func GetFilterProductList(req models.ProductListRequest) models.ProductListFilter {
 	var (
 		filter = models.ProductListFilter{
-			Limit:  req.Limit,
-			Offset: req.Offset,
-			Status: []string{},
+			Limit:      req.Limit,
+			Offset:     req.Offset,
+			Status:     []string{},
+			CategoryID: req.CategoryID,
 			Columns: []string{
 				"products.id",
 				"products.reference",
@@ -40,6 +41,16 @@ func GetFilterProductList(req models.ProductListRequest) models.ProductListFilte
 			filter.Status = append(filter.Status, value)
 		}
 	})
+
+	fromDate, err := utils.ValidateAndConvertTime(req.FromDate)
+	if err == nil {
+		filter.FromDate = &fromDate
+	}
+
+	toDate, err := utils.ValidateAndConvertTime(req.ToDate)
+	if err == nil {
+		filter.FromDate = &toDate
+	}
 
 	return filter
 }

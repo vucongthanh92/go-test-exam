@@ -8,17 +8,20 @@ require (
 	github.com/go-playground/validator/v10 v10.25.0
 	github.com/go-redis/cache/v9 v9.0.0
 	github.com/golang-jwt/jwt v3.2.2+incompatible
+	github.com/google/uuid v1.6.0
 	github.com/google/wire v0.6.0
 	github.com/heptiolabs/healthcheck v0.0.0-20211123025425-613501dd5deb
 	github.com/jasonlvhit/gocron v0.0.1
+	github.com/jung-kurt/gofpdf v1.16.2
+	github.com/kelvins/geocoder v0.0.0-20231112130812-98d82c75e49b
 	github.com/redis/go-redis/v9 v9.7.1
 	github.com/spf13/viper v1.19.0
 	github.com/swaggo/files v1.0.1
 	github.com/swaggo/gin-swagger v1.6.0
 	github.com/swaggo/swag v1.16.4
+	github.com/umahmood/haversine v0.0.0-20151105152445-808ab04add26
 	github.com/vucongthanh92/go-base-utils v1.2.6
 	go.uber.org/zap v1.27.0
-	gopkg.in/guregu/null.v3 v3.5.0
 	gorm.io/driver/postgres v1.5.11
 	gorm.io/gorm v1.25.10
 )
@@ -60,7 +63,6 @@ require (
 	github.com/golang-sql/sqlexp v0.1.0 // indirect
 	github.com/golang/protobuf v1.5.4 // indirect
 	github.com/golang/snappy v0.0.4 // indirect
-	github.com/google/uuid v1.6.0 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware v1.4.0 // indirect
 	github.com/grpc-ecosystem/go-grpc-prometheus v1.2.0 // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.26.1 // indirect

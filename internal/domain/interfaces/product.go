@@ -8,8 +8,9 @@ import (
 )
 
 type ProductQueryRepoI interface {
-	GetProductByFilter(ctx context.Context, filter models.ProductListFilter) (
-		response []models.ProductListResponse, totalRows int64, errRes httpcommon.ErrorDTO)
+	GetProductByFilter(ctx context.Context, filter models.ProductListFilter) (response []models.ProductListResponse, totalRows int64, errRes httpcommon.ErrorDTO)
+	StatisticsProductPerCategory(ctx context.Context) (response []models.StatisticsProductPerCategory, errRes httpcommon.ErrorDTO)
+	StatisticsProductPerSupplier(ctx context.Context) (response []models.StatisticsProductPerSupplier, errRes httpcommon.ErrorDTO)
 }
 
 type ProductCommandRepoI interface {

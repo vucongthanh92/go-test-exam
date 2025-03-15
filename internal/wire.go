@@ -6,6 +6,7 @@ package internal
 import (
 	categoryService "github.com/vucongthanh92/go-test-exam/internal/application/category"
 	"github.com/vucongthanh92/go-test-exam/internal/application/cronjob"
+	distanceService "github.com/vucongthanh92/go-test-exam/internal/application/distance"
 	productService "github.com/vucongthanh92/go-test-exam/internal/application/product"
 	supplierService "github.com/vucongthanh92/go-test-exam/internal/application/supplier"
 
@@ -40,6 +41,7 @@ var handlerSet = wire.NewSet(
 	v1.NewProductHandler,
 	v1.NewCategoryHandler,
 	v1.NewSupplierHandler,
+	v1.NewDistanceHandler,
 )
 
 var serviceSet = wire.NewSet(
@@ -47,6 +49,7 @@ var serviceSet = wire.NewSet(
 	productService.NewProductService,
 	categoryService.NewCategoryService,
 	supplierService.NewSupplierService,
+	distanceService.NewDistanceService,
 )
 
 var repoSet = wire.NewSet(

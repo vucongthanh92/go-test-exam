@@ -17,6 +17,7 @@ import (
 	"github.com/vucongthanh92/go-test-exam/internal/api/http/v1"
 	category2 "github.com/vucongthanh92/go-test-exam/internal/application/category"
 	"github.com/vucongthanh92/go-test-exam/internal/application/cronjob"
+	"github.com/vucongthanh92/go-test-exam/internal/application/distance"
 	product2 "github.com/vucongthanh92/go-test-exam/internal/application/product"
 	supplier2 "github.com/vucongthanh92/go-test-exam/internal/application/supplier"
 	"github.com/vucongthanh92/go-test-exam/internal/repository/persistent/category"
@@ -37,7 +38,9 @@ func InitializeContainer(appCfg *config.AppConfig, readDb *database.GormReadDb, 
 	supplierQueryRepoI := supplier.NewSupplierQueryRepository(readDb)
 	supllierService := supplier2.NewSupplierService(supplierQueryRepoI)
 	supplierHandler := v1.NewSupplierHandler(supllierService)
-	server := http.NewServer(appCfg, productHandler, categoryHandler, supplierHandler)
+	distanceService := distance.NewDistanceService()
+	distanceHandler := v1.NewDistanceHandler(distanceService)
+	server := http.NewServer(appCfg, productHandler, categoryHandler, supplierHandler, distanceHandler)
 	grpcServer := grpc.NewServer(appCfg)
 	cronJobService := cronjob.NewCronJobService()
 	cronServer := cron.NewServer(appCfg, cronJobService)
@@ -51,8 +54,8 @@ var container = wire.NewSet(api.NewApiContainer)
 
 var apiSet = wire.NewSet(cron.NewServer, grpc.NewServer, http.NewServer)
 
-var handlerSet = wire.NewSet(v1.NewProductHandler, v1.NewCategoryHandler, v1.NewSupplierHandler)
+var handlerSet = wire.NewSet(v1.NewProductHandler, v1.NewCategoryHandler, v1.NewSupplierHandler, v1.NewDistanceHandler)
 
-var serviceSet = wire.NewSet(cronjob.NewCronJobService, product2.NewProductService, category2.NewCategoryService, supplier2.NewSupplierService)
+var serviceSet = wire.NewSet(cronjob.NewCronJobService, product2.NewProductService, category2.NewCategoryService, supplier2.NewSupplierService, distance.NewDistanceService)
 
 var repoSet = wire.NewSet(product.NewProductCommandRepository, product.NewProductQueryRepository, category.NewCategoryCommandRepository, category.NewCategoryQueryRepository, supplier.NewSupplierCommandRepository, supplier.NewSupplierQueryRepository)

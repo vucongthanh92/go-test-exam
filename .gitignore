@@ -40,3 +40,4 @@
 zk-single-kafka-single
 .idea/
 __debug_bin*
+*.pdf
