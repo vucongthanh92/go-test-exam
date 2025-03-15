@@ -13,7 +13,6 @@ require (
 	github.com/heptiolabs/healthcheck v0.0.0-20211123025425-613501dd5deb
 	github.com/jasonlvhit/gocron v0.0.1
 	github.com/jung-kurt/gofpdf v1.16.2
-	github.com/kelvins/geocoder v0.0.0-20231112130812-98d82c75e49b
 	github.com/redis/go-redis/v9 v9.7.1
 	github.com/spf13/viper v1.19.0
 	github.com/swaggo/files v1.0.1
