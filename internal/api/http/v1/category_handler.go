@@ -20,13 +20,13 @@ func NewCategoryHandler(
 	}
 }
 
-// API get categories list godoc
+// API GetCategoryList godoc
 // @Tags Category
 // @Summary get list categories
 // @Accept json
 // @Produce json
-// @Router /api/v1/category [post]
-// @Success	200
+// @Router /api/v1/category [get]
+// @Success 200 {object} []entities.Category
 func (h *CategoryHandler) GetCategoryList(c *gin.Context) {
 
 	res, errorCommon := h.categoryService.GetCategoryList(c)

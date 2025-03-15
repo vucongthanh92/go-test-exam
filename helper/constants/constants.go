@@ -35,3 +35,6 @@ var ProductTypeName ProductType[string] = ProductType[string]{
 	OutOfStock: "Out of Stock",
 	OnOrder:    "On Order",
 }
+
+const UrlCheckLocationIP = "http://ip-api.com/json/"
+const UrlCheckLocationCity = "https://nominatim.openstreetmap.org/search"

@@ -10,14 +10,13 @@ import (
 	"strconv"
 
 	"github.com/umahmood/haversine"
+	"github.com/vucongthanh92/go-test-exam/helper/constants"
 	"github.com/vucongthanh92/go-test-exam/internal/domain/models"
 )
 
-const IP_API_URL = "http://ip-api.com/json/"
-
 func GetCoordinatesFromIP(ip string) (res models.Location, err error) {
 
-	url := fmt.Sprintf("%s%s", IP_API_URL, ip)
+	url := fmt.Sprintf("%s%s", constants.UrlCheckLocationIP, ip)
 
 	resp, err := http.Get(url)
 	if err != nil {
@@ -47,14 +46,13 @@ type Location struct {
 }
 
 func GetCoordinatesFromCity(city string) (res models.Location, err error) {
-	baseURL := "https://nominatim.openstreetmap.org/search"
 
 	params := url.Values{}
 	params.Set("q", city)
 	params.Set("format", "json")
 	params.Set("limit", "1")
 
-	apiURL := fmt.Sprintf("%s?%s", baseURL, params.Encode())
+	apiURL := fmt.Sprintf("%s?%s", constants.UrlCheckLocationCity, params.Encode())
 
 	resp, err := http.Get(apiURL)
 	if err != nil {

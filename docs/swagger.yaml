@@ -1,16 +1,82 @@
 definitions:
-  models.CreateCategoryReq:
+  entities.Category:
     properties:
+      id:
+        type: string
+      name:
+        type: string
+    type: object
+  models.CalculateDistanceStockCityRes:
+    properties:
+      distance:
+        type: number
+      stock_city:
+        type: string
+      unit:
+        type: string
+    type: object
+  models.ProductListResponse:
+    properties:
+      addedDate:
+        type: string
       category_name:
         type: string
-    required:
-    - category_name
+      categoryID:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      price:
+        type: number
+      quantity:
+        type: integer
+      reference:
+        type: string
+      status:
+        type: string
+      stockCity:
+        type: string
+      supplier_name:
+        type: string
+      supplierID:
+        type: string
+    type: object
+  models.StatisticsProductPerCategory:
+    properties:
+      category_id:
+        type: string
+      category_name:
+        type: string
+      percentage:
+        type: number
+      product_id:
+        type: string
+      product_name:
+        type: string
+      quantity:
+        type: integer
+    type: object
+  models.StatisticsProductPerSupplier:
+    properties:
+      percentage:
+        type: number
+      product_id:
+        type: string
+      product_name:
+        type: string
+      quantity:
+        type: integer
+      supplier_id:
+        type: string
+      supplier_name:
+        type: string
     type: object
 info:
   contact: {}
 paths:
   /api/v1/category:
-    post:
+    get:
       consumes:
       - application/json
       produces:
@@ -18,45 +84,104 @@ paths:
       responses:
         "200":
           description: OK
+          schema:
+            items:
+              $ref: '#/definitions/entities.Category'
+            type: array
       summary: get list categories
       tags:
       - Category
+  /api/v1/distance/stock_city:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: city name
+        in: query
+        name: city
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.CalculateDistanceStockCityRes'
+      summary: calculate distance from IP to Stock city
+      tags:
+      - Distance
+  /api/v1/product/gen-pdf:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: generate file PDF by product list
+      tags:
+      - Product
   /api/v1/product/search:
     get:
       consumes:
       - application/json
       parameters:
-      - description: CreateCategoryReq
-        in: body
-        name: params
-        required: true
-        schema:
-          $ref: '#/definitions/models.CreateCategoryReq'
+      - description: page size
+        in: query
+        name: pageSize
+        type: string
+      - description: page index
+        in: query
+        name: pageIndex
+        type: string
+      - default: Available, Out of Stock, On Order
+        description: get product by status
+        in: query
+        name: status
+        type: string
       produces:
       - application/json
       responses:
         "200":
           description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.ProductListResponse'
+            type: array
       summary: search products with filter and return pagination
       tags:
       - Product
-  /api/v1/products:
+  /api/v1/statistics/products-per-category:
     get:
       consumes:
       - application/json
-      parameters:
-      - description: CreateCategoryReq
-        in: body
-        name: params
-        required: true
-        schema:
-          $ref: '#/definitions/models.CreateCategoryReq'
       produces:
       - application/json
       responses:
         "200":
           description: OK
-      summary: search products with filter and return pagination
+          schema:
+            items:
+              $ref: '#/definitions/models.StatisticsProductPerCategory'
+            type: array
+      summary: get statistics product per category
       tags:
-      - Supplier
+      - Product
+  /api/v1/statistics/products-per-supplier:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.StatisticsProductPerSupplier'
+            type: array
+      summary: get statistics product per supplier
+      tags:
+      - Product
 swagger: "2.0"

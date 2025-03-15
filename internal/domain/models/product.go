@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/vucongthanh92/go-test-exam/internal/domain/entities"
 )
 
 type ProductListRequest struct {
@@ -27,9 +26,18 @@ type ProductListFilter struct {
 }
 
 type ProductListResponse struct {
-	entities.Product
-	CategoryName string `json:"category_name"`
-	SupplierName string `json:"supplier_name"`
+	ID           uuid.UUID `json:"id"`
+	Reference    string    `json:"reference"`
+	Name         string    `json:"name"`
+	AddedDate    string    `json:"added_date"`
+	Status       string    `json:"status"`
+	CategoryID   uuid.UUID `json:"category_id"`
+	Price        float64   `json:"price"`
+	StockCity    string    `json:"stock_city"`
+	SupplierID   uuid.UUID `json:"supplier_id"`
+	Quantity     int       `json:"quantity"`
+	CategoryName string    `json:"category_name"`
+	SupplierName string    `json:"supplier_name"`
 }
 
 type StatisticsProductPerCategory struct {

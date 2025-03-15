@@ -19,7 +19,7 @@ func GetFilterProductList(req models.ProductListRequest) models.ProductListFilte
 				"products.id",
 				"products.reference",
 				"products.name",
-				"products.added_date",
+				"TO_CHAR(products.added_date, 'YYYY-MM-DD') as added_date",
 				"products.status",
 				"products.category_id",
 				"products.price",

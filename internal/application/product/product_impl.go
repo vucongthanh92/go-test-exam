@@ -69,7 +69,7 @@ func (s *ProductImpl) GenProductListToPDF(ctx context.Context, req []models.Prod
 	for _, product := range req {
 		pdf.CellFormat(colWidths[0], 10, product.Reference, "1", 0, "L", false, 0, "")
 		pdf.CellFormat(colWidths[1], 10, product.Name, "1", 0, "L", false, 0, "")
-		pdf.CellFormat(colWidths[2], 10, product.AddedDate.Format("2006-01-02"), "1", 0, "L", false, 0, "")
+		// pdf.CellFormat(colWidths[2], 10, product.AddedDate.Format("2006-01-02"), "1", 0, "L", false, 0, "")
 		pdf.CellFormat(colWidths[3], 10, product.Status, "1", 0, "L", false, 0, "")
 		pdf.CellFormat(colWidths[4], 10, product.CategoryName, "1", 0, "L", false, 0, "")
 		pdf.CellFormat(colWidths[5], 10, fmt.Sprintf("%f", product.Price), "1", 0, "C", false, 0, "")

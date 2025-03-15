@@ -17,7 +17,7 @@ const docTemplate = `{
     "basePath": "{{.BasePath}}",
     "paths": {
         "/api/v1/category": {
-            "post": {
+            "get": {
                 "consumes": [
                     "application/json"
                 ],
@@ -28,6 +28,61 @@ const docTemplate = `{
                     "Category"
                 ],
                 "summary": "get list categories",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/entities.Category"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/distance/stock_city": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Distance"
+                ],
+                "summary": "calculate distance from IP to Stock city",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "city name",
+                        "name": "city",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.CalculateDistanceStockCityRes"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/product/gen-pdf": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Product"
+                ],
+                "summary": "generate file PDF by product list",
                 "responses": {
                     "200": {
                         "description": "OK"
@@ -49,23 +104,39 @@ const docTemplate = `{
                 "summary": "search products with filter and return pagination",
                 "parameters": [
                     {
-                        "description": "CreateCategoryReq",
-                        "name": "params",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/models.CreateCategoryReq"
-                        }
+                        "type": "string",
+                        "description": "page size",
+                        "name": "pageSize",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "page index",
+                        "name": "pageIndex",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "default": "Available, Out of Stock, On Order",
+                        "description": "get product by status",
+                        "name": "status",
+                        "in": "query"
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK"
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.ProductListResponse"
+                            }
+                        }
                     }
                 }
             }
         },
-        "/api/v1/products": {
+        "/api/v1/statistics/products-per-category": {
             "get": {
                 "consumes": [
                     "application/json"
@@ -74,36 +145,157 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Supplier"
+                    "Product"
                 ],
-                "summary": "search products with filter and return pagination",
-                "parameters": [
-                    {
-                        "description": "CreateCategoryReq",
-                        "name": "params",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/models.CreateCategoryReq"
-                        }
-                    }
-                ],
+                "summary": "get statistics product per category",
                 "responses": {
                     "200": {
-                        "description": "OK"
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.StatisticsProductPerCategory"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/statistics/products-per-supplier": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Product"
+                ],
+                "summary": "get statistics product per supplier",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.StatisticsProductPerSupplier"
+                            }
+                        }
                     }
                 }
             }
         }
     },
     "definitions": {
-        "models.CreateCategoryReq": {
+        "entities.Category": {
             "type": "object",
-            "required": [
-                "category_name"
-            ],
             "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.CalculateDistanceStockCityRes": {
+            "type": "object",
+            "properties": {
+                "distance": {
+                    "type": "number"
+                },
+                "stock_city": {
+                    "type": "string"
+                },
+                "unit": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.ProductListResponse": {
+            "type": "object",
+            "properties": {
+                "addedDate": {
+                    "type": "string"
+                },
+                "categoryID": {
+                    "type": "string"
+                },
                 "category_name": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "number"
+                },
+                "quantity": {
+                    "type": "integer"
+                },
+                "reference": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "stockCity": {
+                    "type": "string"
+                },
+                "supplierID": {
+                    "type": "string"
+                },
+                "supplier_name": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.StatisticsProductPerCategory": {
+            "type": "object",
+            "properties": {
+                "category_id": {
+                    "type": "string"
+                },
+                "category_name": {
+                    "type": "string"
+                },
+                "percentage": {
+                    "type": "number"
+                },
+                "product_id": {
+                    "type": "string"
+                },
+                "product_name": {
+                    "type": "string"
+                },
+                "quantity": {
+                    "type": "integer"
+                }
+            }
+        },
+        "models.StatisticsProductPerSupplier": {
+            "type": "object",
+            "properties": {
+                "percentage": {
+                    "type": "number"
+                },
+                "product_id": {
+                    "type": "string"
+                },
+                "product_name": {
+                    "type": "string"
+                },
+                "quantity": {
+                    "type": "integer"
+                },
+                "supplier_id": {
+                    "type": "string"
+                },
+                "supplier_name": {
                     "type": "string"
                 }
             }

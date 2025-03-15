@@ -23,14 +23,14 @@ func NewDistanceHandler(
 	}
 }
 
-// API get products list godoc
-// @Tags Supplier
-// @Summary search products with filter and return pagination
+// API CalculateDistanceStockCity godoc
+// @Tags Distance
+// @Summary calculate distance from IP to Stock city
 // @Accept json
 // @Produce json
-// @Param  params body models.CreateCategoryReq true "CreateCategoryReq"
-// @Router 	/api/v1/products [get]
-// @Success	200
+// @Param city query string false "city name"
+// @Router 	/api/v1/distance/stock_city [get]
+// @Success 200 {object} models.CalculateDistanceStockCityRes
 func (h *DistanceHandler) CalculateDistanceStockCity(c *gin.Context) {
 
 	var req models.CalculateDistanceStockCityReq

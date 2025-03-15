@@ -24,14 +24,16 @@ func NewProductHandler(
 	}
 }
 
-// API get products list godoc
+// API GetProductList godoc
 // @Tags Product
 // @Summary search products with filter and return pagination
 // @Accept json
 // @Produce json
-// @Param  params body models.CreateCategoryReq true "CreateCategoryReq"
+// @Param pageSize query string false "page size"
+// @Param pageIndex query string false "page index"
+// @Param status query string false "get product by status" default(Available, Out of Stock, On Order)
 // @Router 	/api/v1/product/search [get]
-// @Success	200
+// @Success 200 {object} []models.ProductListResponse
 func (h *ProductHandler) GetProductList(c *gin.Context) {
 	var (
 		req    models.ProductListRequest
@@ -55,13 +57,12 @@ func (h *ProductHandler) GetProductList(c *gin.Context) {
 	c.JSON(http.StatusOK, httpcommon.NewPagingSuccessResponse(res, int(totalRows), constants.ProductTypeName, req.Limit))
 }
 
-// API get products list godoc
+// API GenProductListToPDF godoc
 // @Tags Product
-// @Summary search products with filter and return pagination
+// @Summary generate file PDF by product list
 // @Accept json
 // @Produce json
-// @Param  params body models.CreateCategoryReq true "CreateCategoryReq"
-// @Router 	/api/v1/product/search [get]
+// @Router 	/api/v1/product/gen-pdf [get]
 // @Success	200
 func (h *ProductHandler) GenProductListToPDF(c *gin.Context) {
 	var (
@@ -93,14 +94,13 @@ func (h *ProductHandler) GenProductListToPDF(c *gin.Context) {
 	c.FileAttachment(filePath, fileName)
 }
 
-// API get products list godoc
+// API StatisticsProductPerCategory godoc
 // @Tags Product
-// @Summary search products with filter and return pagination
+// @Summary get statistics product per category
 // @Accept json
 // @Produce json
-// @Param  params body models.CreateCategoryReq true "CreateCategoryReq"
-// @Router 	/api/v1/product/search [get]
-// @Success	200
+// @Router 	/api/v1/statistics/products-per-category [get]
+// @Success 200 {object} []models.StatisticsProductPerCategory
 func (h *ProductHandler) StatisticsProductPerCategory(c *gin.Context) {
 
 	res, errorCommon := h.productService.StatisticsProductPerCategory(c)
@@ -112,14 +112,13 @@ func (h *ProductHandler) StatisticsProductPerCategory(c *gin.Context) {
 	c.JSON(http.StatusOK, res)
 }
 
-// API get products list godoc
+// API StatisticsProductPerSupplier godoc
 // @Tags Product
-// @Summary search products with filter and return pagination
+// @Summary get statistics product per supplier
 // @Accept json
 // @Produce json
-// @Param  params body models.CreateCategoryReq true "CreateCategoryReq"
-// @Router 	/api/v1/product/search [get]
-// @Success	200
+// @Router 	/api/v1/statistics/products-per-supplier [get]
+// @Success 200 {object} []models.StatisticsProductPerSupplier
 func (h *ProductHandler) StatisticsProductPerSupplier(c *gin.Context) {
 
 	res, errorCommon := h.productService.StatisticsProductPerSupplier(c)
