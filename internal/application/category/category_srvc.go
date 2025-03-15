@@ -3,11 +3,10 @@ package category
 import (
 	"context"
 
-	"github.com/vucongthanh92/go-test-exam/internal/domain/models"
+	httpcommon "github.com/vucongthanh92/go-test-exam/helper/http_common"
+	"github.com/vucongthanh92/go-test-exam/internal/domain/entities"
 )
 
 type CategoryService interface {
-	CreateCategory(ctx context.Context, req models.CreateCategoryReq) error
-	GetCategoryByID(ctx context.Context) error
-	UpdateCategoryByID(ctx context.Context) error
+	GetCategoryList(ctx context.Context) (response []entities.Category, errRes httpcommon.ErrorDTO)
 }

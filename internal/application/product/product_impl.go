@@ -5,7 +5,6 @@ import (
 
 	"github.com/vucongthanh92/go-base-utils/tracing"
 	httpcommon "github.com/vucongthanh92/go-test-exam/helper/http_common"
-	"github.com/vucongthanh92/go-test-exam/internal/domain/entities"
 	"github.com/vucongthanh92/go-test-exam/internal/domain/interfaces"
 	"github.com/vucongthanh92/go-test-exam/internal/domain/models"
 )
@@ -20,30 +19,18 @@ func NewProductService(productReadRepo interfaces.ProductQueryRepoI) ProductServ
 	}
 }
 
-func (s *ProductImpl) CreateProduct(ctx context.Context) error {
-	return nil
-}
-
-func (s *ProductImpl) GetProductsByFilter(ctx context.Context, req models.ProductListFilter) (
-	response []entities.Product, totalRows int64, errRes httpcommon.ErrorDTO) {
+func (s *ProductImpl) GetProductsByFilter(ctx context.Context, req models.ProductListRequest) (
+	response []models.ProductListResponse, totalRows int64, errRes httpcommon.ErrorDTO) {
 
 	ctx, span := tracing.StartSpanFromContext(ctx, "GetProductsByFilter")
-	defer func() {
-		span.End()
-	}()
+	defer span.End()
 
-	response, totalRows, errRes = s.productReadRepo.GetProductByFilter(ctx, req)
+	filter := GetFilterProductList(req)
+
+	response, totalRows, errRes = s.productReadRepo.GetProductByFilter(ctx, filter)
 	return response, totalRows, errRes
 }
 
 func (s *ProductImpl) GetProductByID(ctx context.Context) error {
-	return nil
-}
-
-func (s *ProductImpl) UpdateProductByID(ctx context.Context) error {
-	return nil
-}
-
-func (s *ProductImpl) DeleteProductByID(ctx context.Context) error {
 	return nil
 }

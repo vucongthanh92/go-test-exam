@@ -23,3 +23,15 @@ const (
 	GoroutineThreshold = "goroutine-threshold"
 	Kafka              = "kafka"
 )
+
+type ProductType[T any] struct {
+	Available  T
+	OutOfStock T
+	OnOrder    T
+}
+
+var ProductTypeName ProductType[string] = ProductType[string]{
+	Available:  "Available",
+	OutOfStock: "Out of Stock",
+	OnOrder:    "On Order",
+}

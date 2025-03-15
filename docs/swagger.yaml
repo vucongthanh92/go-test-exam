@@ -1,14 +1,28 @@
 definitions:
   models.CreateCategoryReq:
     properties:
-      name:
+      category_name:
         type: string
+    required:
+    - category_name
     type: object
 info:
   contact: {}
 paths:
   /api/v1/category:
     post:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: get list categories
+      tags:
+      - Category
+  /api/v1/product/search:
+    get:
       consumes:
       - application/json
       parameters:
@@ -23,9 +37,9 @@ paths:
       responses:
         "200":
           description: OK
-      summary: create category
+      summary: search products with filter and return pagination
       tags:
-      - Category
+      - Product
   /api/v1/products:
     get:
       consumes:

@@ -15,6 +15,7 @@ import (
 	"net/http"
 	"os"
 	"reflect"
+	"runtime/debug"
 	"strings"
 	"time"
 	"unicode"
@@ -27,8 +28,21 @@ import (
 	utilsSvc "github.com/vucongthanh92/go-base-utils/http/request"
 	"github.com/vucongthanh92/go-base-utils/logger"
 	"go.uber.org/zap"
-	"gopkg.in/guregu/null.v3"
 )
+
+func SafeGo(f func()) {
+	go func() {
+		defer HandlePanic()
+		// call the provided function
+		f()
+	}()
+}
+
+func HandlePanic() {
+	if r := recover(); r != nil {
+		logger.Error("Recovered from panic: ", zap.Any("panic", r), zap.String("stack", string(debug.Stack())))
+	}
+}
 
 func Reverse(s string) (string, error) {
 	if !utf8.ValidString(s) {
@@ -245,108 +259,6 @@ func CheckDuplicateTypeByField[T interface{}](options []T, field string) (err er
 	}
 
 	return nil, false
-}
-
-func GetQueryConditionClauseInStruct(param any, queryArgs map[string]any) []string {
-	var (
-		resp     = make([]string, 0)
-		elTypes  = reflect.TypeOf(param)
-		elValues = reflect.ValueOf(param)
-	)
-
-	if elTypes.NumField() == 0 {
-		return resp
-	}
-
-	for i := 0; i < elTypes.NumField(); i++ {
-		var (
-			elValue        = elValues.Field(i)
-			elField        = elTypes.Field(i)
-			queryClauseTag = elField.Tag.Get("query_clause")
-			queryFieldTag  = elField.Tag.Get("query_field")
-			valueArgs      any
-		)
-
-		if queryClauseTag == "" {
-			continue
-		}
-
-		switch {
-		case elField.Type.Kind() == reflect.String:
-			{
-				if elValue.String() == "" {
-					continue
-				}
-				valueArgs = elValue.String()
-			}
-		case elField.Type.Kind() == reflect.Slice || elField.Type.Kind() == reflect.Array:
-			{
-				if elValue.Len() == 0 {
-					continue
-				}
-
-				tempArr := make([]string, 0)
-				for i := 0; i < elValue.Len(); i++ {
-					if elValue.Index(i).Interface() == nil {
-						continue
-					}
-					tempArr = append(tempArr, fmt.Sprintf("%v", elValue.Index(i).Interface()))
-				}
-
-				if len(tempArr) == 0 {
-					continue
-				}
-
-				resp = append(resp, strings.ReplaceAll(queryClauseTag, "query_field", strings.Join(tempArr, ",")))
-			}
-		case elField.Type == reflect.TypeOf(null.String{}):
-			{
-				if !elValue.Interface().(null.String).Valid {
-					continue
-				}
-				valueArgs = elValue.Interface().(null.String).String
-			}
-		case elField.Type == reflect.TypeOf(null.Int{}):
-			{
-				if !elValue.Interface().(null.Int).Valid {
-					continue
-				}
-				valueArgs = elValue.Interface().(null.Int).Int64
-			}
-		case elField.Type == reflect.TypeOf(null.Float{}):
-			{
-				if !elValue.Interface().(null.Float).Valid {
-					continue
-				}
-				valueArgs = elValue.Interface().(null.Float).Float64
-			}
-		case elField.Type == reflect.TypeOf(null.Time{}):
-			{
-				if !elValue.Interface().(null.Time).Valid {
-					continue
-				}
-				valueArgs = elValue.Interface().(null.Time).Time
-			}
-		case elField.Type == reflect.TypeOf(null.Bool{}):
-			{
-				if !elValue.Interface().(null.Bool).Valid {
-					continue
-				}
-				valueArgs = elValue.Interface().(null.Bool).Bool
-			}
-		default:
-			valueArgs = elValue.Interface()
-		}
-
-		if valueArgs == nil {
-			continue
-		}
-
-		resp = append(resp, strings.ReplaceAll(queryClauseTag, "query_field", ":"+queryFieldTag))
-		queryArgs[queryFieldTag] = valueArgs
-	}
-
-	return resp
 }
 
 func IterateSlicePtr[T any](params []T, f func(i int, item *T)) {

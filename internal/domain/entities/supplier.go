@@ -1,12 +1,12 @@
 package entities
 
-import "time"
+import "github.com/google/uuid"
 
-type Supply struct {
-	ID        uint   `gorm:"primaryKey"`
-	Name      string `gorm:"type:varchar(255);not null"`
-	Contact   string `gorm:"type:varchar(255)"`
-	CreatedAt time.Time
-	UpdatedAt time.Time
-	Products  []Product `gorm:"foreignKey:SupplyID"`
+type Supplier struct {
+	ID   uuid.UUID `gorm:"column:id;type:uuid;primaryKey"`
+	Name string    `gorm:"column:reference;type:varchar(50);not null"`
+}
+
+func (Supplier) TableName() string {
+	return "suppliers"
 }

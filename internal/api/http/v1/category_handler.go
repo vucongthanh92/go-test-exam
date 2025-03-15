@@ -5,9 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	httpcommon "github.com/vucongthanh92/go-test-exam/helper/http_common"
-	"github.com/vucongthanh92/go-test-exam/helper/validation"
 	"github.com/vucongthanh92/go-test-exam/internal/application/category"
-	"github.com/vucongthanh92/go-test-exam/internal/domain/models"
 )
 
 type CategoryHandler struct {
@@ -22,25 +20,20 @@ func NewCategoryHandler(
 	}
 }
 
-// API get products list godoc
+// API get categories list godoc
 // @Tags Category
-// @Summary create category
+// @Summary get list categories
 // @Accept json
 // @Produce json
-// @Param params body models.CreateCategoryReq true "CreateCategoryReq"
 // @Router /api/v1/category [post]
 // @Success	200
-func (h *CategoryHandler) CreateCategory(c *gin.Context) {
-	req := models.CreateCategoryReq{}
-	if err := validation.GetBodyParamsHTTP(c, &req); err != nil {
+func (h *CategoryHandler) GetCategoryList(c *gin.Context) {
+
+	res, errorCommon := h.categoryService.GetCategoryList(c)
+	if errorCommon.Error != nil {
+		httpcommon.ExposeError(c, errorCommon)
 		return
 	}
 
-	err := h.categoryService.CreateCategory(c, req)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, httpcommon.NewErrorResponse(err.Error(), httpcommon.RequestInvalid, ""))
-		return
-	}
-
-	c.JSON(http.StatusOK, nil)
+	c.JSON(http.StatusOK, res)
 }

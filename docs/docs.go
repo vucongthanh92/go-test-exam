@@ -27,7 +27,26 @@ const docTemplate = `{
                 "tags": [
                     "Category"
                 ],
-                "summary": "create category",
+                "summary": "get list categories",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/v1/product/search": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Product"
+                ],
+                "summary": "search products with filter and return pagination",
                 "parameters": [
                     {
                         "description": "CreateCategoryReq",
@@ -80,8 +99,11 @@ const docTemplate = `{
     "definitions": {
         "models.CreateCategoryReq": {
             "type": "object",
+            "required": [
+                "category_name"
+            ],
             "properties": {
-                "name": {
+                "category_name": {
                     "type": "string"
                 }
             }

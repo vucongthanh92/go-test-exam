@@ -1,11 +1,12 @@
 package entities
 
-import "time"
+import "github.com/google/uuid"
 
 type Category struct {
-	ID        uint   `gorm:"primaryKey"`
-	Name      string `gorm:"type:varchar(255);not null"`
-	CreatedAt time.Time
-	UpdatedAt time.Time
-	Products  []Product `gorm:"foreignKey:CategoryID"`
+	ID   uuid.UUID `gorm:"column:id;type:uuid;primaryKey"`
+	Name string    `gorm:"column:name;type:varchar(255);not null"`
+}
+
+func (Category) TableName() string {
+	return "categories"
 }

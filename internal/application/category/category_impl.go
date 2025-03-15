@@ -3,38 +3,31 @@ package category
 import (
 	"context"
 
+	"github.com/vucongthanh92/go-base-utils/tracing"
+	httpcommon "github.com/vucongthanh92/go-test-exam/helper/http_common"
 	"github.com/vucongthanh92/go-test-exam/internal/domain/entities"
 	"github.com/vucongthanh92/go-test-exam/internal/domain/interfaces"
-	"github.com/vucongthanh92/go-test-exam/internal/domain/models"
 )
 
 type CategoryImpl struct {
-	categoryReadRepo  interfaces.CategoryQueryRepoI
-	categoryWriteRepo interfaces.CategoryCommandRepoI
+	categoryReadRepo interfaces.CategoryQueryRepoI
 }
 
 func NewCategoryService(
-	categoryReadRepo interfaces.ProductQueryRepoI,
-	categoryWriteRepo interfaces.CategoryCommandRepoI,
+	categoryReadRepo interfaces.CategoryQueryRepoI,
 ) CategoryService {
 	return &CategoryImpl{
-		categoryReadRepo:  categoryReadRepo,
-		categoryWriteRepo: categoryWriteRepo,
+		categoryReadRepo: categoryReadRepo,
 	}
 }
 
-func (s *CategoryImpl) CreateCategory(ctx context.Context, req models.CreateCategoryReq) error {
+func (s *CategoryImpl) GetCategoryList(ctx context.Context) (response []entities.Category, errRes httpcommon.ErrorDTO) {
 
-	categoryEntity := entities.Category{
-		Name: req.Name,
-	}
+	ctx, span := tracing.StartSpanFromContext(ctx, "GetProductsByFilter")
+	defer span.End()
 
-	err := s.categoryWriteRepo.InsertCategory(ctx, categoryEntity)
-	if err != nil {
-		return err
-	}
-
-	return nil
+	response, errRes = s.categoryReadRepo.GetCategoryList(ctx)
+	return response, errRes
 }
 
 func (s *CategoryImpl) GetCategoryByID(ctx context.Context) error {

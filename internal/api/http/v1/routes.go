@@ -15,6 +15,7 @@ func MapRoutes(
 	v1 := router.Group("/api/v1")
 	{
 		v1.GET("/products", productHandler.GetProductList)
+		v1.GET("/categories", categoryHandler.GetCategoryList)
 	}
 
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))

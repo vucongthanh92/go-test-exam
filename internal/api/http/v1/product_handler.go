@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/vucongthanh92/go-test-exam/helper/constants"
 	httpcommon "github.com/vucongthanh92/go-test-exam/helper/http_common"
 	"github.com/vucongthanh92/go-test-exam/helper/validation"
 	"github.com/vucongthanh92/go-test-exam/internal/application/product"
@@ -28,11 +29,11 @@ func NewProductHandler(
 // @Accept json
 // @Produce json
 // @Param  params body models.CreateCategoryReq true "CreateCategoryReq"
-// @Router 	/api/v1/products [get]
+// @Router 	/api/v1/product/search [get]
 // @Success	200
 func (h *ProductHandler) GetProductList(c *gin.Context) {
 	var (
-		req    models.ProductListFilter
+		req    models.ProductListRequest
 		paging = httpcommon.ParseParams(c)
 	)
 
@@ -50,5 +51,5 @@ func (h *ProductHandler) GetProductList(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, httpcommon.NewPagingSuccessResponse(res, int(totalRows), nil, req.Limit))
+	c.JSON(http.StatusOK, httpcommon.NewPagingSuccessResponse(res, int(totalRows), constants.ProductTypeName, req.Limit))
 }
