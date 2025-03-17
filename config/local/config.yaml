@@ -2,14 +2,14 @@ serviceName: go_test_exam
 development: true
 database:
   readDb:
-    connectionString: "host=3.1.28.125 user=postgres password=M1sIWvQ2D4MfWke7ReSt2IFHVPRXtpp6 dbname=backend_test port=5432 sslmode=disable TimeZone=Asia/Ho_Chi_Minh"
+    connectionString: "host=localhost user=root password=rootroot dbname=demo port=5432 sslmode=disable TimeZone=Asia/Ho_Chi_Minh"
     dbType: postgres
     migrationFilePath: migrations
     maxIdleConns: 100
     maxOpenConns: 200
     connMaxLifetime: 5
   writeDb:
-    connectionString: "host=3.1.28.125 user=postgres password=M1sIWvQ2D4MfWke7ReSt2IFHVPRXtpp6 dbname=backend_test port=5432 sslmode=disable TimeZone=Asia/Ho_Chi_Minh"
+    connectionString: "host=localhost user=root password=rootroot dbname=demo port=5432 sslmode=disable TimeZone=Asia/Ho_Chi_Minh"
     dbType: postgres
     migrationFilePath: migrations
     maxIdleConns: 100
