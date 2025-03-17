@@ -43,16 +43,16 @@ tracing:
   logSpans: false
 kafka:
   dialer:
-    username: AGLMKA433JNXALY3
-    password: 8hG3ZfwlT77+8dNLSMMOB+Is0JXAGYCTH9fPm+FzzyYlZvuChC4rD50GrwXo/CXF
+    username:
+    password:
   config:
-    brokers: [ "pkc-ldvr1.asia-southeast1.gcp.confluent.cloud:9092" ]
-    groupID: order_service_consumer
+    brokers: [ "" ]
+    groupID: 
     initTopics: false
     numWorker: 20
   topics:
     submitOrder:
-      topicName: gogovan.consumer-web.order.submit-order
+      topicName:
       numPartitions: 10
       replicationFactor: 1
 redis:
@@ -80,7 +80,7 @@ s3:
   path:
   reconci:
 daservice:
-  webApi: https://business-staging.gogovan.co.kr
+  webApi: ""
   notification: /api/order/notification/new
   webhook: /api/order/webhook/new
   updateNotification: /api/order/notification
